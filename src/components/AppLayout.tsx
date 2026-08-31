@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 import {
-  Activity, Bell, CalendarDays, ChevronLeft, ChevronRight, CircleDollarSign, ClipboardCheck, FileText, Gauge, Globe2, Landmark, LogOut, Menu, Plus, Search, Settings, ShieldCheck, SlidersHorizontal, Users, Wifi, WifiOff, X, LoaderCircle,
+  Activity, Bell, ChevronLeft, ChevronRight, CircleDollarSign, ClipboardCheck, FileText, Gauge, Globe2, LogOut, Menu, Plus, Search, Settings, ShieldCheck, SlidersHorizontal, Users, Wifi, WifiOff, X, LoaderCircle,
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { sessionStorageKey } from "../lib/auth";
@@ -9,24 +9,22 @@ import { Modal } from "./Modal";
 export type RouteId = "dashboard" | "people" | "processes" | "tasks" | "calendar" | "events" | "team" | "territory" | "documents" | "finance" | "reminders" | "reports" | "privacy" | "audit" | "admin" | "pending";
 
 const nav = [
-  { id: "dashboard", label: "Dashboard", icon: Gauge, module: "dashboard" },
-  { id: "people", label: "Pessoas", icon: Users, module: "people" },
-  { id: "processes", label: "Processos e Demandas", icon: FileText, module: "processes" },
-  { id: "tasks", label: "Tarefas", icon: ClipboardCheck, module: "tasks" },
-  { id: "calendar", label: "Agenda", icon: CalendarDays, module: "calendar" },
-  { id: "events", label: "Eventos", icon: Activity, module: "events" },
-  { id: "team", label: "Equipe e Voluntários", icon: Users, module: "team" },
-  { id: "territory", label: "Território", icon: Globe2, module: "territory" },
-  { id: "documents", label: "Documentos", icon: FileText, module: "documents" },
-  { id: "finance", label: "Administrativo", icon: CircleDollarSign, module: "finance" },
-  { id: "reports", label: "Relatórios", icon: SlidersHorizontal, module: "reports" },
-  { id: "privacy", label: "Privacidade", icon: ShieldCheck, module: "privacy" },
-  { id: "audit", label: "Auditoria", icon: Landmark, module: "audit" },
-  { id: "admin", label: "Administração", icon: Settings, module: "admin" },
+  { id: "dashboard", label: "Dashboard", icon: Gauge, modules: ["dashboard"] },
+  { id: "people", label: "Pessoas", icon: Users, modules: ["people"] },
+  { id: "processes", label: "Processos e Demandas", icon: FileText, modules: ["processes"] },
+  { id: "tasks", label: "Tarefas", icon: ClipboardCheck, modules: ["tasks"] },
+  { id: "events", label: "Eventos", icon: Activity, modules: ["events"] },
+  { id: "team", label: "Equipe e Voluntários", icon: Users, modules: ["team"] },
+  { id: "territory", label: "Território", icon: Globe2, modules: ["territory"] },
+  { id: "documents", label: "Documentos", icon: FileText, modules: ["documents"] },
+  { id: "finance", label: "Administrativo", icon: CircleDollarSign, modules: ["finance"] },
+  { id: "reports", label: "Relatórios", icon: SlidersHorizontal, modules: ["reports"] },
+  { id: "privacy", label: "Auditoria e Privacidade", icon: ShieldCheck, modules: ["privacy", "audit"] },
+  { id: "admin", label: "Administração", icon: Settings, modules: ["admin"] },
 ] as const;
 
 const quickItems = [
-  { route: "people", label: "Pessoa", icon: Users }, { route: "processes", label: "Processo", icon: FileText }, { route: "tasks", label: "Tarefa", icon: ClipboardCheck }, { route: "events", label: "Evento", icon: Activity }, { route: "calendar", label: "Compromisso", icon: CalendarDays }, { route: "reminders", label: "Lembrete", icon: Bell },
+  { route: "people", label: "Pessoa", icon: Users }, { route: "processes", label: "Processo", icon: FileText }, { route: "tasks", label: "Tarefa", icon: ClipboardCheck }, { route: "events", label: "Evento", icon: Activity }, { route: "reminders", label: "Lembrete", icon: Bell },
 ] as const;
 
 export function AppLayout({ children, route, onNavigate }: { children: ReactNode; route: RouteId; onNavigate: (route: RouteId) => void }) {
@@ -58,7 +56,7 @@ export function AppLayout({ children, route, onNavigate }: { children: ReactNode
   return <div className={`app-shell ${collapsed ? "sidebar-collapsed" : ""}`}>
     <aside className={`sidebar ${mobileOpen ? "mobile-open" : ""}`}>
       <div className="sidebar-brand"><span className="brand-mark">CC</span>{!collapsed && <div><strong>{settings.name}</strong><span>{settings.office}</span></div>}<button className="mobile-close icon-button" onClick={() => setMobileOpen(false)}><X size={20} /></button></div>
-      <nav aria-label="Navegação principal">{nav.filter((item) => can(item.module)).map((item) => <button key={item.id} className={route === item.id ? "active" : ""} title={item.label} onClick={() => navigate(item.id)}><item.icon size={19} /><span>{item.label}</span></button>)}</nav>
+      <nav aria-label="Navegação principal">{nav.filter((item) => item.modules.some((module) => can(module))).map((item) => <button key={item.id} className={route === item.id || (item.id === "privacy" && route === "audit") ? "active" : ""} title={item.label} onClick={() => navigate(item.id)}><item.icon size={19} /><span>{item.label}</span></button>)}</nav>
       <div className="sidebar-bottom"><button onClick={() => navigate("pending")}><ClipboardCheck size={19} /><span>Minhas pendências</span></button><button className="collapse-button" onClick={toggle}>{collapsed ? <ChevronRight size={19} /> : <ChevronLeft size={19} />}<span>Recolher menu</span></button></div>
     </aside>
     {mobileOpen && <button className="mobile-overlay" aria-label="Fechar menu" onClick={() => setMobileOpen(false)} />}
@@ -82,3 +80,4 @@ export function AppLayout({ children, route, onNavigate }: { children: ReactNode
     {quickOpen && <Modal title="Criar novo registro" description="Escolha o que deseja adicionar." onClose={() => setQuickOpen(false)}><div className="quick-grid">{quickItems.filter((item) => can(item.route, "create")).map((item) => <button key={item.route} onClick={() => { navigate(item.route); setQuickOpen(false); setTimeout(() => window.dispatchEvent(new CustomEvent("central:quick-new", { detail: item.route })), 50); }}><item.icon size={23} /><span>{item.label}</span><ChevronRight size={17} /></button>)}</div></Modal>}
   </div>;
 }
+
