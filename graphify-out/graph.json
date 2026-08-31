@@ -502,7 +502,7 @@
       "file_type": "code",
       "norm_label": "applayout()",
       "source_file": "src/components/AppLayout.tsx",
-      "source_location": "L32"
+      "source_location": "L30"
     },
     {
       "id": "src_components_modal_confirmdialog",
@@ -1234,7 +1234,7 @@
       "file_type": "code",
       "norm_label": "quickitems",
       "source_file": "src/components/AppLayout.tsx",
-      "source_location": "L28"
+      "source_location": "L26"
     },
     {
       "id": "src_components_modal",
@@ -3209,7 +3209,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/AppLayout.tsx",
-      "source_location": "L33",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -7770,7 +7770,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppLayout.tsx",
-      "source_location": "L28",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -7781,7 +7781,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/AppLayout.tsx",
-      "source_location": "L32",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -9228,5 +9228,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d03366af357e57bf37eda889a07a8e0587522ecf"
+  "built_at_commit": "bfa177ed16b5785d910d84a6dd1d690d7cb9722d"
 }
