@@ -1,0 +1,11 @@
+{
+  "name": "Central de Campanha",
+  "short_name": "Campanha",
+  "description": "Central operacional de gestão de campanha eleitoral",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f2ec",
+  "theme_color": "#11261f",
+  "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

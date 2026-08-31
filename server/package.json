@@ -1,0 +1,12 @@
+{
+  "name": "central-campanha-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:local": "wrangler d1 execute central-campanha --local --file=./schema.sql",
+    "db:remote": "wrangler d1 execute central-campanha --remote --file=./schema.sql"
+  },
+  "devDependencies": { "wrangler": "^4.35.0" }
+}
